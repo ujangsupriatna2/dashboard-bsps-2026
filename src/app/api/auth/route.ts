@@ -11,9 +11,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const validCode = process.env.AUTH_CODE;
+    const validCode = (process.env.AUTH_CODE || "").trim();
 
-    if (code === validCode) {
+    if (code.trim() === validCode) {
       return NextResponse.json({ success: true });
     }
 
