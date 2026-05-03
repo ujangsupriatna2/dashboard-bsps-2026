@@ -131,6 +131,11 @@ interface AlokasiKecamatan {
   desaList: string[];
 }
 
+interface PICInfo {
+  kontak: string;
+  nama: string;
+}
+
 interface TFLMember {
   nama: string;
   noKtp: string;
@@ -159,6 +164,7 @@ interface DashboardData {
   perkecamatanData: PerdesaRow[];
   alokasiPerKecamatan: AlokasiKecamatan[];
   tflPairData: TFLPairGroup[];
+  picKecamatan: Record<string, PICInfo>;
 }
 
 // ============== Chart Colors ==============
@@ -1176,7 +1182,7 @@ export default function DashboardPage() {
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Alokasi Per Kecamatan</CardTitle>
                 <CardDescription>
-                  Ringkasan alokasi per kecamatan beserta daftar desa
+                  Ringkasan alokasi per kecamatan beserta PIC dan daftar desa
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -1186,16 +1192,18 @@ export default function DashboardPage() {
                       <TableHeader>
                         <TableRow className="bg-muted/50">
                           <TableHead className="w-12 text-center">No</TableHead>
-                          <TableHead className="min-w-[160px]">Kecamatan</TableHead>
-                          <TableHead className="w-24 text-center">Jumlah Desa</TableHead>
-                          <TableHead className="w-28 text-center">
-                            Total Alokasi
-                          </TableHead>
-                          <TableHead className="min-w-[300px]">Daftar Desa</TableHead>
+                          <TableHead className="min-w-[140px]">Kecamatan</TableHead>
+                          <TableHead className="w-24 text-center">Jml Desa</TableHead>
+                          <TableHead className="w-24 text-center">Alokasi</TableHead>
+                          <TableHead className="min-w-[150px]">PIC</TableHead>
+                          <TableHead className="min-w-[130px]">Kontak PIC</TableHead>
+                          <TableHead className="min-w-[200px]">Daftar Desa</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {data.alokasiPerKecamatan.map((item, idx) => (
+                        {data.alokasiPerKecamatan.map((item, idx) => {
+                          const pic = data.picKecamatan[item.name];
+                          return (
                           <TableRow key={item.name} className="hover:bg-muted/30">
                             <TableCell className="text-center text-muted-foreground font-mono text-xs">
                               {idx + 1}
@@ -1206,6 +1214,27 @@ export default function DashboardPage() {
                             </TableCell>
                             <TableCell className="text-center font-bold text-lg">
                               {item.total}
+                            </TableCell>
+                            <TableCell className="text-xs">
+                              {pic ? (
+                                <span className="font-medium">{pic.nama}</span>
+                              ) : (
+                                <span className="text-muted-foreground">-</span>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-xs">
+                              {pic ? (
+                                <a
+                                  href={`https://wa.me/62${pic.kontak.replace(/^0/, "")}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="font-mono text-emerald-600 hover:underline whitespace-nowrap"
+                                >
+                                  {pic.kontak}
+                                </a>
+                              ) : (
+                                <span className="text-muted-foreground">-</span>
+                              )}
                             </TableCell>
                             <TableCell className="text-xs">
                               <div className="flex flex-wrap gap-1.5">
@@ -1221,7 +1250,8 @@ export default function DashboardPage() {
                               </div>
                             </TableCell>
                           </TableRow>
-                        ))}
+                          );
+                        })}
                       </TableBody>
                     </Table>
                   </div>

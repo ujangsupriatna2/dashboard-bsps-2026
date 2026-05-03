@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import * as XLSX from "xlsx";
 import path from "path";
 import fs from "fs";
+import picKecamatanData from "@/data/pic-kecamatan.json";
 
 export async function GET() {
   try {
@@ -307,6 +308,7 @@ export async function GET() {
       perkecamatanData,
       alokasiPerKecamatan,
       tflPairData,
+      picKecamatan: picKecamatanData as Record<string, { kontak: string; nama: string }>,
     });
   } catch (error) {
     console.error("Error reading Excel:", error);
