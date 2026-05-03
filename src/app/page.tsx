@@ -1063,8 +1063,8 @@ export default function DashboardPage() {
               <StatCard
                 icon={Building2}
                 label="Desa Tertangani"
-                value={data.tflPairData.reduce((s, t) => s + t.desaList.length, 0)}
-                sub="dari 45 desa total"
+                value={data.summary.totalDesa}
+                sub={`semua desa tercover TFL`}
                 color="bg-gradient-to-br from-amber-500 to-amber-600"
               />
               <StatCard

@@ -89,7 +89,8 @@ export async function GET() {
       .sort((a, b) => b.total - a.total);
 
     const totalKecamatan = kecamatanData.length;
-    const totalDesa = new Set(penerimaList.map((r) => r.desa)).size;
+    // Count desa by desa+kecamatan (same desa name can exist in different kecamatan)
+    const totalDesa = new Set(penerimaList.map((r) => r.desa + "|" + r.kecamatan)).size;
 
     // By desil (pengelompokan)
     const desilMap = new Map<string, number>();
